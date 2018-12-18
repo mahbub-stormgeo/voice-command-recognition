@@ -17,7 +17,7 @@ namespace voice_command_recognition
             speechRecognizer.SetInputToDefaultAudioDevice();
             speechRecognizer.SpeechRecognized += speechRecognizer_SpeechRecognized; 
             speechRecognizer.LoadGrammarAsync(GetGrammarForZooming());
-            speechRecognizer.LoadGrammarAsync(GetMathGrammer());
+            // speechRecognizer.LoadGrammarAsync(GetMathGrammer());
         }
         private void btnStartListen_Click(object sender, RoutedEventArgs e)
         {
@@ -34,12 +34,12 @@ namespace voice_command_recognition
             float confidence = e.Result.Confidence;
             Debug.WriteLine(string.Format("Recognized {0} with confidence {1}", txt, confidence));
             if (confidence < 0.60) return;
-            if (txt.IndexOf("naviplanner") >= 0 && txt.IndexOf("zoom in") > 0)
+            if (txt.ToLower().IndexOf("naviplanner") >= 0 && txt.ToLower().IndexOf("zoom in") > 0)
             {
                 txtSpeech.FontSize--;
                 Debug.WriteLine(txtSpeech.FontSize.ToString());
             }
-            if (txt.IndexOf("naviplanner") >= 0 && txt.IndexOf("zoom out") > 0)
+            if (txt.ToLower().IndexOf("naviplanner") >= 0 && txt.ToLower().IndexOf("zoom out") > 0)
             {
                 txtSpeech.FontSize++;
                 Debug.WriteLine(txtSpeech.FontSize.ToString());
@@ -55,22 +55,7 @@ namespace voice_command_recognition
             btnStartListen.IsEnabled = true;
             btnStopListen.IsEnabled = false;
             speechRecognizer.RecognizeAsyncStop();
-        }
-        private Grammar GetGrammar()
-        {
-            GrammarBuilder grammarBuilder = new GrammarBuilder();
-
-            Choices commandChoices = new Choices("weight", "color", "size");
-            grammarBuilder.Append(commandChoices);
-
-            Choices valueChoices = new Choices();
-            valueChoices.Add("normal", "bold");
-            valueChoices.Add("red", "green", "blue");
-            valueChoices.Add("small", "medium", "large");
-            grammarBuilder.Append(valueChoices);
-
-            return new Grammar(grammarBuilder);
-        }
+        }        
         private Grammar GetGrammarForZooming()
         {
             GrammarBuilder grammarBuilder = new GrammarBuilder();
