@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "voice-command-recognition", "voice-command-recognition\voice-command-recognition.csproj", "{6B4D7BFE-E8A0-4D33-84FD-CED67508FB7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "azure-cognitive-speech-servoce", "azure-cognitive-speech-servoce\azure-cognitive-speech-servoce.csproj", "{DDA747E1-89B7-48FE-9B26-1C03B659B9F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "azure-cognitive-speech-service", "azure-cognitive-speech-servoce\azure-cognitive-speech-service.csproj", "{DDA747E1-89B7-48FE-9B26-1C03B659B9F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
