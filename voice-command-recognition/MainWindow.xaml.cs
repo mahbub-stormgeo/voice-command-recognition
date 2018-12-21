@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Speech.Recognition;
 using System.Windows;
@@ -24,7 +25,16 @@ namespace voice_command_recognition
         }
         private void btnStartListen_Click(object sender, RoutedEventArgs e)
         {
-            SpeechRecognizer recognizer = new SpeechRecognizer();
+            try
+            {
+                // important for the first time to enable the speech recognition desktop app
+                SpeechRecognizer recognizer = new SpeechRecognizer();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            
             btnStartListen.Content = "Listening started...";
             btnStartListen.IsEnabled = false;
             btnStopListen.IsEnabled = true;
