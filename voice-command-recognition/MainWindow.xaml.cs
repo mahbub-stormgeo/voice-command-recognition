@@ -13,31 +13,40 @@ namespace voice_command_recognition
     public partial class MainWindow : Window
     {
         SpeechRecognitionEngine speechRecognizer = new SpeechRecognitionEngine(new CultureInfo("en-us"));
+        static Grammar g1, g2, g3, g4;
         public MainWindow()
         {
             InitializeComponent();
             speechRecognizer.SetInputToDefaultAudioDevice();
-            speechRecognizer.SpeechRecognized += speechRecognizer_SpeechRecognized; 
-            speechRecognizer.LoadGrammarAsync(GetGrammarForZooming());
-            speechRecognizer.LoadGrammarAsync(GetGrammerForFontStyle());
-            speechRecognizer.LoadGrammarAsync(GetMathGrammar("plus"));
-            speechRecognizer.LoadGrammarAsync(GetMathGrammar("multiply"));
+            speechRecognizer.SpeechRecognized += speechRecognizer_SpeechRecognized;
+            //speechRecognizer.LoadGrammarAsync(GetGrammarForZooming());
+            //speechRecognizer.LoadGrammarAsync(GetGrammerForFontStyle());
+            //speechRecognizer.LoadGrammarAsync(GetMathGrammar("plus"));
+            //speechRecognizer.LoadGrammarAsync(GetMathGrammar("multiply"));
+            speechRecognizer.LoadGrammarAsync(new Grammar(new GrammarBuilder("Hey NaviPlanner start listening")));
+            txtSpeech.Text = "To start say 'Hey NaviPlanner, start listening'";
+            speechRecognizer.RecognizeAsync(RecognizeMode.Multiple);
+            g1 = GetGrammarForZooming();
+            g2 = GetGrammerForFontStyle();
+            g3 = GetMathGrammar("plus");
+            g4 = GetMathGrammar("multiply");
         }
         private void btnStartListen_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                // important for the first time to enable the speech recognition desktop app
-                SpeechRecognizer recognizer = new SpeechRecognizer();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
+            //try
+            //{
+            //    // important for the first time to enable the speech recognition desktop app
+            //    SpeechRecognizer recognizer = new SpeechRecognizer();
+            //    recognizer.Enabled = false;
+            //}
+            //catch (Exception ex)
+            //{
+            //    Debug.WriteLine(ex.Message);
+            //}
             
             btnStartListen.Content = "Listening started...";
             btnStartListen.IsEnabled = false;
-            btnStopListen.IsEnabled = true;
+            // btnStopListen.IsEnabled = true;
             txtSpeech.Text = "welcome to naviplanner...";
             speechRecognizer.RecognizeAsync(RecognizeMode.Multiple);            
         }
@@ -48,12 +57,33 @@ namespace voice_command_recognition
             Debug.WriteLine(string.Format("Recognized {0} with confidence {1}", txt, confidence));            
             if (confidence < 0.60) return;
             txt = txt.ToLower();
-            if(txt.Contains("naviplanner") && (txt.Contains("zoom in") || txt.Contains("zoomin")))
+            if (txt.Contains("naviplanner") && (txt.Contains("start listening")))
+            {
+                btnStartListen.IsEnabled = true;
+                btnStartListen.Content = "Listening now";                
+                speechRecognizer.LoadGrammarAsync(g1);
+                speechRecognizer.LoadGrammarAsync(g2);
+                speechRecognizer.LoadGrammarAsync(g3);
+                speechRecognizer.LoadGrammarAsync(g4);
+                speechRecognizer.LoadGrammarAsync(new Grammar(new GrammarBuilder("stop listening")));
+                txtSpeech.Text = "say 'zoom in' or 'zoom out' to see effect";
+            }
+            if ((txt.Contains("stop listening")))
+            {
+                btnStartListen.IsEnabled = false;
+                btnStartListen.Content = "not listening";
+                txtSpeech.Text = "To start say 'Hey NaviPlanner, start listening'";
+                speechRecognizer.UnloadGrammar(g1);
+                speechRecognizer.UnloadGrammar(g2);
+                speechRecognizer.UnloadGrammar(g3);
+                speechRecognizer.UnloadGrammar(g4);
+            }
+            if ((txt.Contains("zoom in") || txt.Contains("zoomin")))
             {
                 txtSpeech.FontSize += 2;
                 Debug.WriteLine(txtSpeech.FontSize.ToString());
             }
-            else if (txt.Contains("naviplanner") && (txt.Contains("zoom out") || txt.Contains("zoomout")))
+            else if ((txt.Contains("zoom out") || txt.Contains("zoomout")))
             {
                 txtSpeech.FontSize -= 2;
                 Debug.WriteLine(txtSpeech.FontSize.ToString());
@@ -80,13 +110,13 @@ namespace voice_command_recognition
         {
             btnStartListen.Content = "start listeing";
             btnStartListen.IsEnabled = true;
-            btnStopListen.IsEnabled = false;
+            // btnStopListen.IsEnabled = false;
             speechRecognizer.RecognizeAsyncStop();
-        }        
+        }                
         private Grammar GetGrammarForZooming()
         {
             GrammarBuilder grammarBuilder = new GrammarBuilder();
-            grammarBuilder.Append("Hey NaviPlanner");
+            // grammarBuilder.Append("Hey NaviPlanner");
             Choices valueChoices = new Choices();
             valueChoices.Add("zoom in", "zoomin");
             valueChoices.Add("zoom out", "zoomout");
@@ -137,10 +167,25 @@ namespace voice_command_recognition
             {
                 case "weight":
                     FontWeightConverter weightConverter = new FontWeightConverter();
-                    txtSpeech.FontWeight = (FontWeight)weightConverter.ConvertFromString(value);
+                    try
+                    {
+                        txtSpeech.FontWeight = (FontWeight)weightConverter.ConvertFromString(value);
+                    }
+                    catch(Exception ex)
+                    {
+
+                    }                    
                     break;
                 case "color":
-                    txtSpeech.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(value));
+                    try
+                    {
+                        txtSpeech.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(value));
+                    }
+                    catch (Exception)
+                    {
+
+                        // throw;
+                    }
                     break;
                 case "size":
                     switch (value)
