@@ -18,13 +18,8 @@ namespace voice_command_recognition
         {
             InitializeComponent();
             speechRecognizer.SetInputToDefaultAudioDevice();
-            speechRecognizer.SpeechRecognized += speechRecognizer_SpeechRecognized;
-            //speechRecognizer.LoadGrammarAsync(GetGrammarForZooming());
-            //speechRecognizer.LoadGrammarAsync(GetGrammerForFontStyle());
-            //speechRecognizer.LoadGrammarAsync(GetMathGrammar("plus"));
-            //speechRecognizer.LoadGrammarAsync(GetMathGrammar("multiply"));
-            speechRecognizer.LoadGrammarAsync(new Grammar(new GrammarBuilder("Hey NaviPlanner start listening")));
-            txtSpeech.Text = "To start say 'Hey NaviPlanner, start listening'";
+            speechRecognizer.SpeechRecognized += speechRecognizer_SpeechRecognized;         
+            speechRecognizer.LoadGrammarAsync(new Grammar(new GrammarBuilder("Hey NaviPlanner start listening")));           
             speechRecognizer.RecognizeAsync(RecognizeMode.Multiple);
             g1 = GetGrammarForZooming();
             g2 = GetGrammerForFontStyle();
@@ -141,7 +136,7 @@ namespace voice_command_recognition
             grammarBuilder.Append(commandChoices);
             Choices valueChoices = new Choices();
             valueChoices.Add("normal", "bold");
-            valueChoices.Add("red", "green", "blue");
+            valueChoices.Add("red", "green", "blue","yellow");
             valueChoices.Add("small", "medium", "large");
             grammarBuilder.Append(valueChoices);
             return new Grammar(grammarBuilder);

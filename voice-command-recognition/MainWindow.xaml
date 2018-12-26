@@ -7,10 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
      <DockPanel Margin="10" HorizontalAlignment="Center">
-        <WrapPanel DockPanel.Dock="Top">
-            <Button x:Name="btnStartListen" Click="btnStartListen_Click" Content="not listeing" Height="40" Width="150" Margin="25 10 50 10" IsEnabled="false"/>
+        <WrapPanel DockPanel.Dock="Top" Width="216">
+            <Button x:Name="btnStartListen" Click="btnStartListen_Click" Content="not listeing" Height="40" Width="168" Margin="25 10 50 10" IsEnabled="false"/>
             <!--<Button x:Name="btnStopListen" Click="btnStopListen_Click" Content="stop listening" Width="150" Height="40" IsEnabled="False"/>-->
         </WrapPanel>
-        <TextBox Margin="0,60,0,71.4" Name="txtSpeech" AcceptsReturn="True" TextWrapping="Wrap" Width="400" HorizontalAlignment="Center" Text="Click start listening....."/>
+        <TextBox Margin="0,60,0,71.4" Name="txtSpeech" AcceptsReturn="True" TextWrapping="Wrap" Width="400" HorizontalAlignment="Center" Text="To start say 'Hey NaviPlanner, start listening'"/>
      </DockPanel>
 </Window>
